@@ -1,0 +1,6 @@
+pandas
+requests
+SQLAlchemy
+pyodbc
+PyYAML
+scikit-learn 

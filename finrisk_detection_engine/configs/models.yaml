@@ -1,0 +1,32 @@
+unsupervised:
+  isolation_forest:
+    n_estimators: 100
+    contamination: 0.05
+    random_state: 42
+  lof:
+    n_neighbors: 20
+    contamination: 0.05
+  one_class_svm:
+    kernel: "rbf"
+    nu: 0.05
+    gamma: "scale"
+
+supervised:
+  xgboost:
+    n_estimators: 100
+    max_depth: 6
+    learning_rate: 0.1
+    scale_pos_weight: 19
+    random_state: 42
+  random_forest:
+    n_estimators: 100
+    max_features: "sqrt"
+    random_state: 42
+  logistic_regression:
+    max_iter: 1000
+    random_state: 42
+
+training:
+  test_size: 0.20
+  cv_folds: 5
+  smote_random_state: 42

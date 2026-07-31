@@ -41,7 +41,7 @@ def get_engine(config: SqlServerConfig) -> Engine:
         engine = create_engine(
             build_connection_url(config),
             pool_pre_ping=True,
-            pool_recycle=1800,
+            pool_recycle=config.pool_recycle,
             future=True,
         )
         logger.info(

@@ -1,0 +1,16 @@
+sql:
+  server: "localhost\\SQLEXPRESS"
+  database: "FinRiskIntelDB"
+  table: "dbo.finrisk_modeling_dataset"
+  driver: "ODBC Driver 17 for SQL Server"
+  trusted_connection: true
+  pool_recycle: 1800
+
+csv:
+  sanctions_list: "data/raw/regulatory_docs/sanctions_list.csv"
+  country_risk_scores: "data/raw/regulatory_docs/country_risk_scores.csv"
+
+api:
+  timeout: 30
+  retries: 3
+  backoff_factor: 0.3

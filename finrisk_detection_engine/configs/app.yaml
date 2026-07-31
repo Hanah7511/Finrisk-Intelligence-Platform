@@ -1,0 +1,9 @@
+environment: development  # development / staging / production
+project_name: finrisk-intelligence-platform
+version: "1.0.0"
+logging:
+  level: INFO
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+mlflow:
+  tracking_uri: "http://localhost:5000"
+  experiment_name: "AML_Detection"

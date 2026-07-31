@@ -1,0 +1,69 @@
+risk_fusion:
+  weights:
+    rules: 0.30
+    xgboost: 0.30
+    unsupervised: 0.20
+    statistical: 0.10
+    random_forest: 0.10
+  severity:
+    low: 0.30
+    medium: 0.60
+    high: 0.80
+    critical: 1.00
+
+rules:
+  velocity_score_threshold: 0.80
+  transaction_frequency_24h_threshold: 10
+  ip_risk_score_threshold: 0.70
+  account_age_days_threshold: 30
+  large_transaction_threshold: 1000
+
+  # Jurisdiction-specific reporting thresholds (structuring / large-transaction rules).
+  # GCC uses UAE's AML law (AED 55,000) as a documented proxy for all 6 GCC states -
+  # a simplification, not each country's actual individual central-bank threshold.
+  jurisdiction_thresholds_usd:
+    US: 10000
+    IN: 12000
+    GCC: 15000
+    DEFAULT: 10000
+
+  jurisdiction_countries:
+    US: ["United States"]
+    IN: ["India"]
+    GCC: ["United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman"]
+
+  # Country risk tiers (sanctions_rules.py). Scores are relative risk weights, not
+  # official FATF scores - descending from sanctioned (highest) to baseline (lowest).
+  country_risk_tiers:
+    sanctioned:
+      score: 1.00
+      countries: ["North Korea", "Iran", "Myanmar"]
+    grey_list:
+      score: 0.65
+      countries:
+        ["Nigeria", "South Africa", "Philippines", "Vietnam", "Syria", "Yemen",
+         "Kenya", "Mali", "Haiti", "South Sudan", "Mozambique", "Senegal",
+         "Tanzania", "Venezuela", "Democratic Republic of the Congo", "Monaco",
+         "Namibia", "Croatia", "Bulgaria", "Cameroon", "Burkina Faso"]
+    moderate:
+      score: 0.45
+      countries: ["China", "Hong Kong"]
+    gcc_baseline:
+      score: 0.35
+      countries: ["United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman"]
+    baseline_score: 0.20
+
+statistical:
+  zscore_threshold: 3.0
+  iqr_multiplier: 1.5
+  mad_threshold: 3.5
+
+# Isolation Forest + One-Class SVM (Layer 7). Same number reused in three
+# places: both models' own contamination/nu parameter, and the quantile cut
+# on the final combined score (flag top 10%) - keeps "10% is anomalous" one
+# consistent assumption instead of three numbers that could drift apart.
+unsupervised:
+  contamination: 0.10
+
+validation:
+  missing_value_threshold: 0.30

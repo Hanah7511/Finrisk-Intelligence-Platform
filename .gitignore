@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Large raw datasets (e.g. IBM AML HI-Small, 475 MB) - never commit
+data/raw/

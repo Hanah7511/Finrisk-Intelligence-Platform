@@ -13,6 +13,7 @@ EXPECTED_TYPES: Dict[str, str] = {
     "payment_id": "numeric",
     "order_id": "numeric",
     "customer_id": "numeric",
+    "counterparty_account_id": "numeric",
     "account_age_days": "numeric",
     "kyc_level": "string",
     "customer_risk_segment": "string",

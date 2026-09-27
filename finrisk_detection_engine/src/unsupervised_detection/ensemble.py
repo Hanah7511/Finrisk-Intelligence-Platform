@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 FEATURE_EXCLUDE_COLS = [
     # identifiers - carry no generalizable signal, would just let the model
     # memorize individual customers/payments instead of learning behavior
-    "payment_id", "order_id", "customer_id", "payment_timestamp",
+    "payment_id", "order_id", "customer_id", "counterpart_account_id" ,"payment_timestamp",
     # target + leakage-risk metadata
     "fraud_label", "fraud_rule_name", "label_source",
     # Layer 5 (rule engine) outputs - excluded so this layer doesn't just

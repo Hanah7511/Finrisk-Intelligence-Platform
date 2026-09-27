@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import logging
-from typing import Tuple
-
+from typing import Tuplebut
 import numpy as np
 import pandas as pd
-
+from src.feature_engineering.feature_engineering import run_feature_engineering
 from src.preprocessing.report import PreprocessingReport
 from src.preprocessing.split import time_based_split
 from src.preprocessing.missing_values import (
@@ -24,7 +23,6 @@ from src.preprocessing.encoding import (
 )
 from src.preprocessing.outlier_handling import log_transform_skewed, LOG_TRANSFORM_COLS
 from src.preprocessing.timestamp_features import add_timestamp_features
-from src.feature_engineering.feature_engineering import run_feature_engineering
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -37,11 +35,16 @@ def run_preprocessing(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, Pre
     cleaned = drop_missing_timestamps(df)
     report.rows_dropped_missing_timestamp = report.rows_before_split - len(cleaned)
 
+    cleaned = drop_missing_timestamps(df)
+    report.rows_dropped_missing_timestamp = report.rows_before_split - len(cleaned)
+
     engineered, fe_report = run_feature_engineering(cleaned)
     report.history_features_recomputed = fe_report.history_features_recomputed
     report.derived_features_added = fe_report.derived_features_added
 
     train_df, test_df = time_based_split(engineered)
+
+    train_df, test_df = time_based_split(cleaned)
     report.train_rows = len(train_df)
     report.test_rows = len(test_df)
 
@@ -70,6 +73,9 @@ def run_preprocessing(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame, Pre
     train_df, test_df = log_transform_skewed(train_df, test_df)
     report.log_transformed_cols = [c for c in LOG_TRANSFORM_COLS if c in train_df.columns]
 
+    train_df, test_df = log_transform_skewed(train_df, test_df)
+    report.log_transformed_cols = [c for c in LOG_TRANSFORM_COLS if c in train_df.columns]
+
     train_df = add_timestamp_features(train_df)
     test_df = add_timestamp_features(test_df)
     report.timestamp_features_added = [
@@ -86,16 +92,8 @@ if __name__ == "__main__":
 
     dummy = pd.DataFrame({
         "payment_id": range(n),
-        "customer_id": rng.choice(["CUST_1", "CUST_2", "CUST_3"], n),
         "payment_timestamp": pd.date_range("2026-01-01", periods=n, freq="6h"),
         "account_age_days": rng.integers(10, 900, n).astype(float),
-        "instrument_age_days": rng.integers(1, 500, n).astype(float),
-        "unique_merchants": rng.integers(1, 4, n),
-        "unique_products": rng.integers(1, 5, n),
-        "item_count": rng.integers(1, 6, n),
-        "ip_risk_score": rng.uniform(0, 1, n),
-        "amount_risk_score": rng.uniform(0, 1, n),
-        "device_risk_score": rng.uniform(0, 1, n),
         "kyc_level": rng.choice(["LOW", "MEDIUM", "HIGH"], n),
         "geo_risk_level": rng.choice(["LOW", "MEDIUM", "HIGH"], n),
         "customer_risk_segment": rng.choice(["LOW", "MEDIUM", "HIGH"], n),

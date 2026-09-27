@@ -67,3 +67,30 @@ unsupervised:
 
 validation:
   missing_value_threshold: 0.30
+
+# Simulated analyst review (bootstraps Layer 8's training label - see
+# feedback_simulation_and_leakage notes). fraud_label/fraud_rule_name are
+# rule-engine output, not independent ground truth, so this simulates the
+# real-AML pattern of rules generating alerts -> analysts confirming a
+# minority as true fraud -> the confirmed verdict becomes the ML label.
+feedback_simulation:
+  random_seed: 42
+  false_negative_rate: 0.0015
+  confirmation_rates:
+    sanctions_country: 0.08
+    structuring_flag: 0.08
+    geo_velocity: 0.03
+    corridor_velocity: 0.03
+    amount_frequency: 0.03
+    device_geo_risk: 0.05
+
+# XGBoost (Layer 8, supervised). Target is analyst_confirmed_label, not the
+# rule-engine fraud_label (see feedback_simulation block above) - scale_pos_weight
+# is computed dynamically from the train split each run, not hardcoded here,
+# so it stays correct if feedback-simulation confirmation rates change.
+supervised:
+  xgboost:
+    n_estimators: 100
+    max_depth: 5
+    learning_rate: 0.1
+    random_state: 42

@@ -10,8 +10,6 @@ class PreprocessingReport:
     rows_dropped_missing_timestamp: int = 0
     train_rows: int = 0
     test_rows: int = 0
-    history_features_recomputed: List[str] = field(default_factory=list)
-    derived_features_added: List[str] = field(default_factory=list)
     numeric_cols_filled: List[str] = field(default_factory=list)
     categorical_cols_filled: List[str] = field(default_factory=list)
     ordinal_encoded_cols: List[str] = field(default_factory=list)
@@ -25,8 +23,6 @@ class PreprocessingReport:
         print(f"Rows before split          : {self.rows_before_split}")
         print(f"Rows dropped (missing ts)  : {self.rows_dropped_missing_timestamp}")
         print(f"Train / Test rows          : {self.train_rows} / {self.test_rows}")
-        print(f"History features recomputed: {self.history_features_recomputed or 'None'}")
-        print(f"Derived features added     : {self.derived_features_added or 'None'}")
         print(f"Numeric cols filled        : {self.numeric_cols_filled or 'None'}")
         print(f"Categorical cols filled    : {self.categorical_cols_filled or 'None'}")
         print(f"Ordinal encoded cols       : {self.ordinal_encoded_cols or 'None'}")

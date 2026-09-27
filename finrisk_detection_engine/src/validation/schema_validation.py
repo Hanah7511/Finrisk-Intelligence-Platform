@@ -24,6 +24,7 @@ EXPECTED_COLUMNS: List[str] = [
     "payment_id",
     "order_id",
     "customer_id",
+    "counterparty_account_id"
     "account_age_days",
     "kyc_level",
     "customer_risk_segment",

@@ -85,14 +85,14 @@ CASE MANAGEMENT & HUMAN FEEDBACK LOOP
 
 | Component | Status |
 |---|---|
-| Data Ingestion & Validation | In Progress |
-| Feature Engineering | In Progress |
-| Rule-Based Engine | In Progress |
-| Statistical Detection | In Progress |
-| Unsupervised ML | In Progress |
-| Supervised Classification | In Progress |
-| Risk Fusion Engine | In Progress |
+| Data Ingestion & Validation | complete |
+| Feature Engineering | complete |
+| Rule-Based Engine | complete |
+| Statistical Detection | complete |
+| Unsupervised ML | complete |
+| Supervised Classification | complete |
 | GNN Fraud Ring Detection | In Progress |
+| Risk Fusion Engine | In Progress |
 | Alert Severity Engine | In Progress |
 | FastAPI Scoring API | In Progress |
 

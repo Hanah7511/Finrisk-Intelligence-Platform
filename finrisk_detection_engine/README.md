@@ -91,7 +91,7 @@ CASE MANAGEMENT & HUMAN FEEDBACK LOOP
 | Statistical Detection | complete |
 | Unsupervised ML | complete |
 | Supervised Classification | complete |
-| GNN Fraud Ring Detection | In Progress |
+| GNN Fraud Ring Detection | complete |
 | Risk Fusion Engine | In Progress |
 | Alert Severity Engine | In Progress |
 | FastAPI Scoring API | In Progress |

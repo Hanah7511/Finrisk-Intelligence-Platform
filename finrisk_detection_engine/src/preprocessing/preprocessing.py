@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Tuplebut
+from typing import Tuple
 import numpy as np
 import pandas as pd
 from src.feature_engineering.feature_engineering import run_feature_engineering

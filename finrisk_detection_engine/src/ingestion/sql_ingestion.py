@@ -20,6 +20,16 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+# Money columns converted from the table's stored unit to real USD at load.
+AMOUNT_COLUMNS = ["amount_usd_equivalent", "customer_avg_amount_30d"]
+
+
+def _to_real_usd(df: pd.DataFrame, multiplier: float) -> pd.DataFrame:
+    for col in AMOUNT_COLUMNS:
+        if col in df.columns:
+            df[col] = df[col] * multiplier
+    return df
+
 
 class SqlIngestionError(Exception):
     """Raised when SQL ingestion fails."""
@@ -80,8 +90,7 @@ def load_finrisk_modeling_dataset(
             logger.info("Loaded dataset successfully with shape=%s", df.shape)
             logger.info("Columns loaded: %s", df.columns.tolist())
 
-
-        return df
+        return _to_real_usd(df, config.amount_unit_multiplier)
 
     except Exception as exc:
         logger.exception("Failed to load dataset from %s", config.table)

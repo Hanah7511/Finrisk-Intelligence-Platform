@@ -16,7 +16,9 @@ rules:
   transaction_frequency_24h_threshold: 10
   ip_risk_score_threshold: 0.70
   account_age_days_threshold: 30
-  large_transaction_threshold: 1000
+  # Real USD (amounts are converted from thousands at load). Was 1000 when compared
+  # against raw thousands, i.e. $1M - same behavior, now stated honestly.
+  large_transaction_threshold: 1000000
 
   # Jurisdiction-specific reporting thresholds (structuring / large-transaction rules).
   # GCC uses UAE's AML law (AED 55,000) as a documented proxy for all 6 GCC states -

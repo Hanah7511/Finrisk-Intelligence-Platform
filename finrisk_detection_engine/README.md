@@ -1,11 +1,11 @@
 
 # FinRisk Detection Engine
 
-> Multi-layer AML detection pipeline combining rule-based engines, statistical anomaly detection, ensemble ML, Graph Neural Networks, and supervised fraud classification for real-time financial crime scoring.
+> Multi-layer AML detection pipeline: rule-based checks, statistical and unsupervised anomaly detection, supervised XGBoost, graph features and risk fusion.
 
 ![Status](https://img.shields.io/badge/Status-In%20Progress-orange)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue)
-![XGBoost](https://img.shields.io/badge/XGBoost-Ensemble%20ML-green)
+![XGBoost](https://img.shields.io/badge/XGBoost-Supervised-green)
 
 Part of the [Financial Risk Intelligence Platform](../README.md)
 
@@ -13,89 +13,60 @@ Part of the [Financial Risk Intelligence Platform](../README.md)
 
 ## Overview
 
-The `finrisk_detection_engine` is the detection backbone of the Financial Risk Intelligence Platform. It ingests raw transaction data, applies multiple detection layers, fuses risk signals, and generates alerts that are passed to `finintel_sentinel_ai` for autonomous investigation.
+The `finrisk_detection_engine` is the detection part of the Financial Risk Intelligence Platform. It loads transaction data, applies several detection layers, fuses their scores into one risk score and severity, and will pass alerts to `finintel_sentinel_ai` for investigation once that part is built.
 
 ---
 
 ## Detection Pipeline
 ```
-MULTI-SOURCE DATA LAYER
-(Banking Transactions + Customer Data + Device Data + KYC Records + Regulatory Documents)
+DATA INGESTION              CSV + SQL Server + REST API                         built
     ↓
-DATA INGESTION LAYER
-(CSV + SQL Server + APIs + Kafka Streaming)
+DATA VALIDATION             Missing values, schema, duplicates, types, ranges   built
     ↓
-DATA VALIDATION LAYER
-(Missing Values + Schema Validation + Duplicate Checks + Type Validation)
+PREPROCESSING               Cleaning, encoding, outliers, timestamps, split     built
     ↓
-DATA PREPROCESSING LAYER
-(Cleaning + Encoding + Scaling + Timestamp Processing + Feature Normalization)
+FEATURE ENGINEERING         Derived and customer-history features               built
     ↓
-SQL ANALYTICS & HISTORICAL FEATURE LAYER
-(Transaction Aggregation + Behavioral History + Velocity Metrics + Device Intelligence)
+RULE-BASED AML ENGINE       Large amount, structuring, sanctioned country,      built
+                            geo-risk, velocity
     ↓
-FEATURE ENGINEERING LAYER
-(SQL Behavioral Features + Python ML Features + Velocity Features + Risk Indicators)
+STATISTICAL DETECTION       Double MAD                                          built
     ↓
-RULE-BASED AML ENGINE
-(Structuring Rules + Sanctions Flags + Geo-Risk Rules + Velocity Rules + Threshold Rules)
+UNSUPERVISED DETECTION      Isolation Forest + One-Class SVM ensemble           built
     ↓
-STATISTICAL ANOMALY DETECTION LAYER
-(Z-Score + IQR + MAD + Percentile-Based Detection)
+SUPERVISED DETECTION        XGBoost with SHAP explanations                      built
     ↓
-UNSUPERVISED & HYBRID ML ANOMALY DETECTION LAYER
-(Isolation Forest + LOF + One-Class SVM + Ensemble Anomaly Scoring)
+GRAPH DETECTION             Ring benchmark (connected components);              built
+                            graph features + XGBoost on IBM AML
     ↓
-SUPERVISED FRAUD CLASSIFICATION LAYER
-(Logistic Regression + Random Forest + XGBoost)
+RISK FUSION                 Weighted score -> LOW / MEDIUM / HIGH / CRITICAL;   built (self-test)
+                            a sanctioned country is never below HIGH
     ↓
-RISK FUSION ENGINE
-(Combines Statistical + Rule-Based + ML + Behavioral Risk Scores)
+END-TO-END RUN              All layers in one pipeline on the SQL data          planned
     ↓
-GRAPH ML FEATURE LAYER
-(Customer Relationships + Shared Devices + Transaction Networks + Suspicious Connection Mapping)
-    ↓
-GNN FRAUD RING DETECTION LAYER
-(GraphSAGE for Fraud Ring & Network Fraud Detection)
-    ↓
-ALERT SEVERITY ENGINE
-(Low / Medium / High / Critical Risk Prioritization)
-    ↓
-CASE MANAGEMENT & HUMAN FEEDBACK LOOP
-(Analyst Validation + False Positive Review + Investigator Notes + Audit Logging)
-    ↓
-→ Alerts passed to FinIntel Sentinel AI for investigation
+→ Alerts passed to FinIntel Sentinel AI for investigation                       planned
 ```
----
-```
-│   ├── rules/               # rule-based AML engine
-│   ├── statistical/         # Z-score, IQR, MAD detectors
-│   ├── unsupervised/        # Isolation Forest, LOF, One-Class SVM
-│   ├── supervised/          # Logistic Regression, Random Forest, XGBoost
-│   ├── fusion/              # risk signal fusion engine
-│   ├── gnn/                 # GraphSAGE fraud ring detection
-│   ├── alerts/              # severity engine and case management
-│   └── api/                 # FastAPI scoring endpoint
-├── configs/
-└── main.py
-```
+
+Each layer can be run on its own, e.g. `python -m src.rules.rule_engine` or `python -m src.risk_fusion.risk_fusion`.
+
 ---
 
 ## Status
 
 | Component | Status |
 |---|---|
-| Data Ingestion & Validation | complete |
-| Feature Engineering | complete |
-| Rule-Based Engine | complete |
-| Statistical Detection | complete |
-| Unsupervised ML | complete |
-| Supervised Classification | complete |
-| GNN Fraud Ring Detection | complete |
-| Risk Fusion Engine | In Progress |
-| Alert Severity Engine | In Progress |
-| FastAPI Scoring API | In Progress |
+| Data ingestion & validation | Complete |
+| Preprocessing & feature engineering | Complete |
+| Rule-based engine | Complete |
+| Statistical detection (double MAD) | Complete |
+| Unsupervised ML (Isolation Forest + One-Class SVM) | Complete |
+| Supervised XGBoost | Complete (self-test needs a stratified split) |
+| Graph ring detection + IBM benchmark | Complete |
+| Risk fusion & severity | Complete (self-test on hand-made rows) |
+| End-to-end pipeline run | Planned |
+| Random Forest, GraphSAGE GNN | Planned |
+| FastAPI scoring API, MLflow, Docker, tests | Planned |
 
 ---
 
-*Part of [Financial Risk Intelligence Platform](https://github.com/Hanah7511/finrisk-intelligence-platform)*
+*Part of [Financial Risk Intelligence Platform](https://github.com/Hanah7511/Finrisk-Intelligence-Platform)*

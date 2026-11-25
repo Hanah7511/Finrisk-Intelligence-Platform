@@ -219,3 +219,8 @@ __marimo__/
 
 # Large raw datasets (e.g. IBM AML HI-Small, 475 MB) - never commit
 data/raw/
+
+# FinIntel: UAE law and FATF text (copyrighted / terms not confirmed) - local only, never commit
+data/knowledge_base/aml_regulations_local.json
+# FinIntel: the ChromaDB index stores the law text, so it is rebuilt locally, never committed
+finintel_sentinel_ai/vector_db/
